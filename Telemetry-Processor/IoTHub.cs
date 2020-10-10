@@ -56,24 +56,52 @@ namespace Solution_Accelerator
 
             var desired = new TwinCollection();
 
-            if (twin.Properties.Desired.Contains("led_red") && twin.Properties.Desired["led_red"] != patlite.person)
+            if (twin.Properties.Desired.Contains("led_red"))
             {
-                desired["led_red"] = patlite.person ? 1 : 0;
+                if (twin.Properties.Desired["led_red"] != patlite.person)
+                {
+                    desired["led_red"] = patlite.person ? 1 : 0;
+                }
+                else
+                {
+                    desired["led_red"] = patlite.person ? 1 : 0;
+                }
             }
 
-            if (twin.Properties.Desired.Contains("led_blue") && twin.Properties.Desired["led_blue"] != patlite.elephant)
+            if (twin.Properties.Desired.Contains("led_blue"))
             {
-                desired["led_blue"] = patlite.elephant ? 1 : 0;
+                if (twin.Properties.Desired["led_blue"] != patlite.elephant)
+                {
+                    desired["led_blue"] = patlite.elephant ? 1 : 0;
+                }
+                else
+                {
+                    desired["led_blue"] = patlite.elephant ? 1 : 0;
+                }
             }
 
-            if (twin.Properties.Desired.Contains("led_yellow") && twin.Properties.Desired["led_yellow"] != patlite.giraffe)
+            if (twin.Properties.Desired.Contains("led_yellow"))
             {
-                desired["led_yellow"] = patlite.giraffe ? 1 : 0;
+                if (twin.Properties.Desired["led_yellow"] != patlite.giraffe)
+                {
+                    desired["led_yellow"] = patlite.giraffe ? 1 : 0;
+                }
+                else
+                {
+                    desired["led_yellow"] = patlite.giraffe ? 1 : 0;
+                }
             }
 
-            if (twin.Properties.Desired.Contains("led_white") && twin.Properties.Desired["led_white"] != patlite.zebra)
+            if (twin.Properties.Desired.Contains("led_white"))
             {
-                desired["led_white"] = patlite.zebra ? 1 : 0;
+                if (twin.Properties.Desired["led_white"] != patlite.zebra)
+                {
+                    desired["led_white"] = patlite.zebra ? 1 : 0;
+                }
+                else
+                {
+                    desired["led_white"] = patlite.zebra ? 1 : 0;
+                }
             }
 
             if (desired.Count > 0)
