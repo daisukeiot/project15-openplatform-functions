@@ -9,6 +9,8 @@ using Microsoft.Azure.EventHubs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Newtonsoft.Json;
+using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Shared;
 
 namespace Solution_Accelerator
 {
@@ -16,6 +18,9 @@ namespace Solution_Accelerator
     {
         private const string Signalr_Hub = "telemetryhub";
         private const string Consumer_Group = "telemetry-cg";
+        private static String IoTHubConnectionString = Environment.GetEnvironmentVariable("IoTHubCS");
+        private static String PatliteDeviceId = Environment.GetEnvironmentVariable("PatliteDeviceId");
+        private static RegistryManager registryManager = null;
 
         [FunctionName("Telemetry_Processor")]
         public static async Task Run([EventHubTrigger("devicetelemetryhub", ConsumerGroup = "telemetry-functions-cg", Connection = "EVENTHUB_CS")] EventData[] eventData,
@@ -24,10 +29,27 @@ namespace Solution_Accelerator
         {
             var exceptions = new List<Exception>();
 
+            if (registryManager == null)
+            {
+                registryManager = RegistryManager.CreateFromConnectionString(IoTHubConnectionString);
+            }
+
             foreach (EventData ed in eventData)
             {
                 try
                 {
+                    if (ed.Properties.ContainsKey("MessageType"))
+                    {
+                        if (ed.Properties["MessageType"].Equals("Patlite"))
+                        {
+                            //var patliteMsg = Encoding.UTF8.GetString(ed.Body.Array);
+                            //log.LogInformation($"Patlite Message Received: {patliteMsg}");
+
+                            //UpdatePatliteTwin(patliteMsg, log).Wait();
+                            continue;
+                        }
+                    }
+
                     if (ed.SystemProperties.ContainsKey("iothub-message-source"))
                     {
                         string deviceId = ed.SystemProperties["iothub-connection-device-id"].ToString();
@@ -150,6 +172,47 @@ namespace Solution_Accelerator
             log.LogInformation($"OnDeviceLifecycleChanged");
             signalrData.data = JsonConvert.SerializeObject(eventData.Properties);
         }
+        public static async Task UpdatePatliteTwin(String message, ILogger log)
+        {
+            var twin = await registryManager.GetTwinAsync(PatliteDeviceId);
+
+            //log.LogInformation($"Desired  : {twin.Properties.Desired}");
+            //log.LogInformation($"Reported : {twin.Properties.Reported}");
+            var jsonMessage = message.Replace("\"", "'");
+            jsonMessage = jsonMessage.Replace("\\", "");
+            jsonMessage = jsonMessage.Replace("'{", "{");
+            jsonMessage = jsonMessage.Replace("}'", "}");
+
+            PATLITE_DATA patlite = JsonConvert.DeserializeObject<PATLITE_DATA>(jsonMessage);
+
+            var desired = new TwinCollection();
+
+            if (twin.Properties.Desired.Contains("led_red") && twin.Properties.Desired["led_red"] != patlite.person)
+            {
+                desired["led_red"] = patlite.person ? 1 : 0;
+            }
+
+            if (twin.Properties.Desired.Contains("led_blue") && twin.Properties.Desired["led_blue"] != patlite.person)
+            {
+                desired["led_blue"] = patlite.person ? 1 : 0;
+            }
+
+            if (twin.Properties.Desired.Contains("led_yellow") && twin.Properties.Desired["led_yellow"] != patlite.person)
+            {
+                desired["led_yellow"] = patlite.person ? 1 : 0;
+            }
+
+            if (twin.Properties.Desired.Contains("led_white") && twin.Properties.Desired["led_white"] != patlite.person)
+            {
+                desired["led_white"] = patlite.person ? 1 : 0;
+            }
+
+            if (desired.Count > 0 )
+            {
+                twin.Properties.Desired = desired;
+                await registryManager.UpdateTwinAsync(PatliteDeviceId, twin, twin.ETag);
+            }
+        }
 
         public class NOTIFICATION_DATA
         {
@@ -160,6 +223,14 @@ namespace Solution_Accelerator
             public string eventTime { get; set; }
             public string data { get; set; }
             public string dtDataSchema { get; set; }
+        }
+
+        public class PATLITE_DATA
+        {
+            public bool elephant { get; set; }
+            public bool zebra { get; set; }
+            public bool giraffe { get; set; }
+            public bool person { get; set; }
         }
     }
 }
