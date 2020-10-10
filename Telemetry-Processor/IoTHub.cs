@@ -62,10 +62,10 @@ namespace Solution_Accelerator
                 {
                     desired["led_red"] = patlite.person ? 1 : 0;
                 }
-                else
-                {
-                    desired["led_red"] = patlite.person ? 1 : 0;
-                }
+            }
+            else
+            {
+                desired["led_red"] = patlite.person ? 1 : 0;
             }
 
             if (twin.Properties.Desired.Contains("led_blue"))
@@ -74,10 +74,10 @@ namespace Solution_Accelerator
                 {
                     desired["led_blue"] = patlite.elephant ? 1 : 0;
                 }
-                else
-                {
-                    desired["led_blue"] = patlite.elephant ? 1 : 0;
-                }
+            }
+            else
+            {
+                desired["led_blue"] = patlite.elephant ? 1 : 0;
             }
 
             if (twin.Properties.Desired.Contains("led_yellow"))
@@ -86,10 +86,10 @@ namespace Solution_Accelerator
                 {
                     desired["led_yellow"] = patlite.giraffe ? 1 : 0;
                 }
-                else
-                {
-                    desired["led_yellow"] = patlite.giraffe ? 1 : 0;
-                }
+            }
+            else
+            {
+                desired["led_yellow"] = patlite.giraffe ? 1 : 0;
             }
 
             if (twin.Properties.Desired.Contains("led_white"))
@@ -98,10 +98,10 @@ namespace Solution_Accelerator
                 {
                     desired["led_white"] = patlite.zebra ? 1 : 0;
                 }
-                else
-                {
-                    desired["led_white"] = patlite.zebra ? 1 : 0;
-                }
+            }
+            else
+            {
+                desired["led_white"] = patlite.zebra ? 1 : 0;
             }
 
             if (desired.Count > 0)
