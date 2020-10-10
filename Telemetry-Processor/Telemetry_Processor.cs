@@ -46,6 +46,10 @@ namespace Solution_Accelerator
                             //log.LogInformation($"Patlite Message Received: {patliteMsg}");
 
                             //UpdatePatliteTwin(patliteMsg, log).Wait();
+                            //continue;
+                        }
+                        else
+                        {
                             continue;
                         }
                     }
