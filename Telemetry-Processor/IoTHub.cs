@@ -58,10 +58,7 @@ namespace Solution_Accelerator
 
             if (twin.Properties.Desired.Contains("led_red"))
             {
-                if (twin.Properties.Desired["led_red"] != patlite.person)
-                {
-                    desired["led_red"] = patlite.person ? 1 : 0;
-                }
+                desired["led_red"] = patlite.person ? 1 : 0;
             }
             else
             {
@@ -70,10 +67,7 @@ namespace Solution_Accelerator
 
             if (twin.Properties.Desired.Contains("led_blue"))
             {
-                if (twin.Properties.Desired["led_blue"] != patlite.elephant)
-                {
-                    desired["led_blue"] = patlite.elephant ? 1 : 0;
-                }
+                desired["led_blue"] = patlite.elephant ? 1 : 0;
             }
             else
             {
@@ -82,10 +76,7 @@ namespace Solution_Accelerator
 
             if (twin.Properties.Desired.Contains("led_yellow"))
             {
-                if (twin.Properties.Desired["led_yellow"] != patlite.giraffe)
-                {
-                    desired["led_yellow"] = patlite.giraffe ? 1 : 0;
-                }
+                desired["led_yellow"] = patlite.giraffe ? 1 : 0;
             }
             else
             {
@@ -94,10 +85,7 @@ namespace Solution_Accelerator
 
             if (twin.Properties.Desired.Contains("led_white"))
             {
-                if (twin.Properties.Desired["led_white"] != patlite.zebra)
-                {
-                    desired["led_white"] = patlite.zebra ? 1 : 0;
-                }
+                desired["led_white"] = patlite.zebra ? 1 : 0;
             }
             else
             {
